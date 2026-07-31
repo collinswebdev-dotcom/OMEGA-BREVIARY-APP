@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ω OMEGA BREVIARY - Roman Catholic</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="omega-header">
+            <div class="logo">
+                <span class="omega-symbol">Ω</span>
+                <h1>OMEGA BREVIARY</h1>
+                <span class="subtitle">Roman Catholic • 100% Accurate</span>
+            </div>
+            <div class="date-display">
+                <span id="currentDate"></span>
+                <span id="liturgicalRank" class="rank-badge"></span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="omega-main">
+            <!-- Sidebar - Navigation -->
+            <aside class="sidebar">
+                <div class="ribbon-indicator">
+                    <h3>📖 RIBBON POSITIONS</h3>
+                    <div class="ribbon-list">
+                        <div class="ribbon-item" id="ribbon1">
+                            <span class="ribbon-color red"></span>
+                            <span class="ribbon-label">Morning Prayer</span>
+                            <span class="ribbon-location"></span>
+                        </div>
+                        <div class="ribbon-item" id="ribbon2">
+                            <span class="ribbon-color green"></span>
+                            <span class="ribbon-label">Daytime Prayer</span>
+                            <span class="ribbon-location"></span>
+                        </div>
+                        <div class="ribbon-item" id="ribbon3">
+                            <span class="ribbon-color blue"></span>
+                            <span class="ribbon-label">Evening Prayer</span>
+                            <span class="ribbon-location"></span>
+                        </div>
+                        <div class="ribbon-item" id="ribbon4">
+                            <span class="ribbon-color purple"></span>
+                            <span class="ribbon-label">Night Prayer</span>
+                            <span class="ribbon-location"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation-menu">
+                    <button class="nav-btn active" data-hour="lauds">
+                        🌅 Morning
+                    </button>
+                    <button class="nav-btn" data-hour="daytime">
+                        ☀️ Daytime
+                    </button>
+                    <button class="nav-btn" data-hour="vespers">
+                        🌆 Evening
+                    </button>
+                    <button class="nav-btn" data-hour="compline">
+                        🌙 Night
+                    </button>
+                </div>
+
+                <div class="calendar-nav">
+                    <button id="prevDay">◀</button>
+                    <span id="currentDayDisplay">Today</span>
+                    <button id="nextDay">▶</button>
+                </div>
+            </aside>
+
+            <!-- Main Prayer Display -->
+            <section class="prayer-content">
+                <div class="saint-info" id="saintInfo">
+                    <h2 id="saintName">Loading...</h2>
+                    <p id="saintBio"></p>
+                    <div class="saint-details">
+                        <span id="saintFeast"></span>
+                        <span id="saintRank"></span>
+                    </div>
+                </div>
+
+                <div class="prayer-section" id="prayerContent">
+                    <!-- Dynamic content loaded by Omega AI -->
+                    <div class="loading">🧠 Omega AI is analyzing...</div>
+                </div>
+
+                <div class="manual-references" id="manualRefs">
+                    <h3>📚 Manual Breviary References</h3>
+                    <div id="refContent"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="omega-footer">
+            <p>⚡ Powered by OMEGA AI • Roman Catholic Sources • 100% Accurate</p>
+            <p>Data sourced from: Roman Missal, Liturgy of the Hours, Roman Martyrology</p>
+        </footer>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
