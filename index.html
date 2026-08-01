@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Ω OMEGA BREVIARY - Roman Catholic</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="manifest" href="manifest.json" />
     <style>
-        /* Emergency fixes - will be replaced by CSS file */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Georgia', serif; 
@@ -16,6 +13,8 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+        
+        /* Header */
         .omega-header {
             background: linear-gradient(135deg, #1a0e2e, #2a1040);
             padding: 1rem 2rem;
@@ -39,6 +38,34 @@
         }
         .logo h1 { font-size: 1.8rem; color: #c9a84c; letter-spacing: 2px; }
         .subtitle { font-size: 0.7rem; color: rgba(255,255,255,0.6); font-style: italic; }
+        .version-selector {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            padding: 0.3rem;
+            border-radius: 8px;
+            border: 1px solid rgba(201,168,76,0.2);
+        }
+        .version-btn {
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+        }
+        .version-btn.active {
+            background: #c9a84c;
+            color: #1a0e2e;
+        }
+        .version-btn:hover:not(.active) {
+            background: rgba(201,168,76,0.2);
+            color: #fff;
+        }
         .date-display { text-align: right; }
         #currentDate { font-size: 1.2rem; color: #fff; display: block; }
         .rank-badge {
@@ -53,15 +80,19 @@
         .rank-badge.feast { background: #c9a84c; color: #1a0e2e; }
         .rank-badge.memorial { background: #2e7d32; color: white; }
         .rank-badge.ferial { background: #37474f; color: white; }
+        
+        /* Main Layout */
         .omega-main {
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 350px 1fr;
             gap: 2rem;
             padding: 2rem;
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
             min-height: 70vh;
         }
+        
+        /* Sidebar */
         .sidebar {
             background: rgba(26,14,46,0.9);
             border: 1px solid rgba(201,168,76,0.2);
@@ -101,7 +132,17 @@
         .ribbon-color.blue { background: #0d47a1; }
         .ribbon-color.purple { background: #4a148c; }
         .ribbon-label { font-size: 0.9rem; flex: 1; }
-        .ribbon-location { font-size: 0.7rem; color: #c9a84c; font-style: italic; }
+        .ribbon-location { 
+            font-size: 0.7rem; 
+            color: #c9a84c; 
+            font-style: italic;
+        }
+        .ribbon-location.abridged {
+            color: #81c784;
+            font-size: 0.65rem;
+        }
+        
+        /* Navigation */
         .navigation-menu {
             margin-top: 2rem;
             display: flex;
@@ -152,6 +193,8 @@
             color: #1a0e2e;
         }
         #currentDayDisplay { font-size: 0.9rem; color: #c9a84c; }
+        
+        /* Prayer Content */
         .prayer-content {
             background: rgba(26,14,46,0.9);
             border: 1px solid rgba(201,168,76,0.2);
@@ -178,6 +221,8 @@
             font-size: 0.8rem;
             color: #c9a84c;
         }
+        
+        /* Prayer Section */
         .prayer-section { padding: 1rem 0; }
         .prayer-section h3 { color: #c9a84c; font-size: 1.3rem; margin: 1.5rem 0 0.5rem; }
         .prayer-section .psalm {
@@ -201,6 +246,8 @@
             margin: 0.5rem 0;
             padding: 0.5rem 1rem;
         }
+        
+        /* Manual References */
         .manual-references {
             margin-top: 2rem;
             border-top: 1px solid rgba(201,168,76,0.2);
@@ -209,7 +256,7 @@
         .manual-references h3 { color: #c9a84c; margin-bottom: 1rem; font-size: 1.1rem; }
         #refContent {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr;
             gap: 0.8rem;
         }
         .ref-item {
@@ -219,8 +266,32 @@
             border-left: 3px solid #c9a84c;
         }
         .ref-item .hour { font-weight: bold; color: #c9a84c; display: block; font-size: 0.9rem; }
-        .ref-item .location { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+        .ref-item .location { 
+            font-size: 0.8rem; 
+            color: rgba(255,255,255,0.7); 
+            margin-top: 0.3rem;
+        }
+        .ref-item .abridged-location {
+            font-size: 0.75rem;
+            color: #81c784;
+            margin-top: 0.2rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(129,199,132,0.1);
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .ref-item .version-tag {
+            font-size: 0.6rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+        }
+        .ref-item .version-tag.full { background: #c9a84c; color: #1a0e2e; }
+        .ref-item .version-tag.abridged { background: #81c784; color: #1a0e2e; }
+        
         .loading { text-align: center; padding: 2rem; color: #c9a84c; font-size: 1.2rem; }
+        
+        /* Footer */
         .omega-footer {
             text-align: center;
             padding: 1.5rem;
@@ -229,6 +300,27 @@
             font-size: 0.8rem;
         }
         .omega-footer p:first-child { color: #c9a84c; margin-bottom: 0.3rem; }
+        
+        /* Version Info Badge */
+        .version-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: rgba(201,168,76,0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .version-info span {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .version-info .current-version {
+            color: #c9a84c;
+            font-weight: bold;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
             .omega-main { grid-template-columns: 1fr; padding: 1rem; }
             .omega-header { flex-direction: column; text-align: center; padding: 1rem; }
@@ -236,6 +328,7 @@
             .logo h1 { font-size: 1.4rem; }
             .prayer-content { padding: 1rem; }
             #saintName { font-size: 1.5rem; }
+            .version-selector { width: 100%; justify-content: center; }
         }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1a0e2e; }
@@ -252,6 +345,10 @@
                 <h1>OMEGA BREVIARY</h1>
                 <span class="subtitle">Roman Catholic • 100% Accurate</span>
             </div>
+            <div class="version-selector">
+                <button class="version-btn active" data-version="full">📚 Full Breviary</button>
+                <button class="version-btn" data-version="abridged">📖 Abridged</button>
+            </div>
             <div class="date-display">
                 <span id="currentDate"></span>
                 <span id="liturgicalRank" class="rank-badge"></span>
@@ -262,6 +359,11 @@
         <main class="omega-main">
             <!-- Sidebar -->
             <aside class="sidebar">
+                <div class="version-info">
+                    <span>📖 Version:</span>
+                    <span class="current-version" id="versionDisplay">Full Breviary</span>
+                </div>
+
                 <div class="ribbon-indicator">
                     <h3>📖 RIBBON POSITIONS</h3>
                     <div class="ribbon-list">
@@ -328,7 +430,7 @@
 
         <footer class="omega-footer">
             <p>⚡ Powered by OMEGA AI • Roman Catholic Sources • 100% Accurate</p>
-            <p>Data sourced from: Roman Missal, Liturgy of the Hours, Roman Martyrology</p>
+            <p>Supporting both Full & Abridged Breviary versions</p>
         </footer>
     </div>
 
