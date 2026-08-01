@@ -2,10 +2,246 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Ω OMEGA BREVIARY - Roman Catholic</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="manifest" href="manifest.json" />
+    <style>
+        /* Emergency fixes - will be replaced by CSS file */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Georgia', serif; 
+            background: #0a0615; 
+            color: #f5f0e8;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .omega-header {
+            background: linear-gradient(135deg, #1a0e2e, #2a1040);
+            padding: 1rem 2rem;
+            border-bottom: 3px solid #c9a84c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { display: flex; align-items: center; gap: 0.5rem; }
+        .omega-symbol { 
+            font-size: 2.5rem; 
+            color: #c9a84c; 
+            font-weight: bold;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(201,168,76,0.3); }
+            50% { text-shadow: 0 0 30px rgba(201,168,76,0.8); }
+        }
+        .logo h1 { font-size: 1.8rem; color: #c9a84c; letter-spacing: 2px; }
+        .subtitle { font-size: 0.7rem; color: rgba(255,255,255,0.6); font-style: italic; }
+        .date-display { text-align: right; }
+        #currentDate { font-size: 1.2rem; color: #fff; display: block; }
+        .rank-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 0.3rem;
+        }
+        .rank-badge.solemnity { background: #c62828; color: white; }
+        .rank-badge.feast { background: #c9a84c; color: #1a0e2e; }
+        .rank-badge.memorial { background: #2e7d32; color: white; }
+        .rank-badge.ferial { background: #37474f; color: white; }
+        .omega-main {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 70vh;
+        }
+        .sidebar {
+            background: rgba(26,14,46,0.9);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .ribbon-indicator h3 {
+            color: #c9a84c;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            padding-bottom: 0.5rem;
+        }
+        .ribbon-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .ribbon-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .ribbon-item:hover { background: rgba(201,168,76,0.1); }
+        .ribbon-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .ribbon-color.red { background: #c62828; }
+        .ribbon-color.green { background: #2e7d32; }
+        .ribbon-color.blue { background: #0d47a1; }
+        .ribbon-color.purple { background: #4a148c; }
+        .ribbon-label { font-size: 0.9rem; flex: 1; }
+        .ribbon-location { font-size: 0.7rem; color: #c9a84c; font-style: italic; }
+        .navigation-menu {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .nav-btn {
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-align: left;
+            width: 100%;
+        }
+        .nav-btn:hover {
+            background: rgba(201,168,76,0.1);
+            border-color: #c9a84c;
+        }
+        .nav-btn.active {
+            background: rgba(201,168,76,0.15);
+            border-color: #c9a84c;
+            color: #c9a84c;
+        }
+        .calendar-nav {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        .calendar-nav button {
+            background: rgba(201,168,76,0.2);
+            border: 1px solid #c9a84c;
+            color: #fff;
+            padding: 0.3rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .calendar-nav button:hover {
+            background: #c9a84c;
+            color: #1a0e2e;
+        }
+        #currentDayDisplay { font-size: 0.9rem; color: #c9a84c; }
+        .prayer-content {
+            background: rgba(26,14,46,0.9);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        .saint-info {
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        #saintName { color: #c9a84c; font-size: 2rem; margin-bottom: 0.5rem; }
+        #saintBio { line-height: 1.6; color: rgba(255,255,255,0.8); font-size: 1rem; }
+        .saint-details {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .saint-details span {
+            padding: 0.3rem 0.8rem;
+            background: rgba(201,168,76,0.1);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #c9a84c;
+        }
+        .prayer-section { padding: 1rem 0; }
+        .prayer-section h3 { color: #c9a84c; font-size: 1.3rem; margin: 1.5rem 0 0.5rem; }
+        .prayer-section .psalm {
+            font-style: italic;
+            color: rgba(255,255,255,0.7);
+            padding: 0.5rem 1rem;
+            border-left: 3px solid #c9a84c;
+            margin: 0.5rem 0;
+        }
+        .prayer-section .antiphon { color: #c9a84c; font-weight: bold; margin: 0.8rem 0; }
+        .prayer-section .reading {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+        .prayer-section .prayer-text {
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+        }
+        .manual-references {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(201,168,76,0.2);
+            padding-top: 1.5rem;
+        }
+        .manual-references h3 { color: #c9a84c; margin-bottom: 1rem; font-size: 1.1rem; }
+        #refContent {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+        .ref-item {
+            background: rgba(255,255,255,0.05);
+            padding: 0.8rem;
+            border-radius: 6px;
+            border-left: 3px solid #c9a84c;
+        }
+        .ref-item .hour { font-weight: bold; color: #c9a84c; display: block; font-size: 0.9rem; }
+        .ref-item .location { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; }
+        .loading { text-align: center; padding: 2rem; color: #c9a84c; font-size: 1.2rem; }
+        .omega-footer {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(201,168,76,0.1);
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+        }
+        .omega-footer p:first-child { color: #c9a84c; margin-bottom: 0.3rem; }
+        @media (max-width: 768px) {
+            .omega-main { grid-template-columns: 1fr; padding: 1rem; }
+            .omega-header { flex-direction: column; text-align: center; padding: 1rem; }
+            .date-display { text-align: center; }
+            .logo h1 { font-size: 1.4rem; }
+            .prayer-content { padding: 1rem; }
+            #saintName { font-size: 1.5rem; }
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a0e2e; }
+        ::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b8943a; }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -24,7 +260,7 @@
 
         <!-- Main Content -->
         <main class="omega-main">
-            <!-- Sidebar - Navigation -->
+            <!-- Sidebar -->
             <aside class="sidebar">
                 <div class="ribbon-indicator">
                     <h3>📖 RIBBON POSITIONS</h3>
@@ -32,39 +268,31 @@
                         <div class="ribbon-item" id="ribbon1">
                             <span class="ribbon-color red"></span>
                             <span class="ribbon-label">Morning Prayer</span>
-                            <span class="ribbon-location"></span>
+                            <span class="ribbon-location">Loading...</span>
                         </div>
                         <div class="ribbon-item" id="ribbon2">
                             <span class="ribbon-color green"></span>
                             <span class="ribbon-label">Daytime Prayer</span>
-                            <span class="ribbon-location"></span>
+                            <span class="ribbon-location">Loading...</span>
                         </div>
                         <div class="ribbon-item" id="ribbon3">
                             <span class="ribbon-color blue"></span>
                             <span class="ribbon-label">Evening Prayer</span>
-                            <span class="ribbon-location"></span>
+                            <span class="ribbon-location">Loading...</span>
                         </div>
                         <div class="ribbon-item" id="ribbon4">
                             <span class="ribbon-color purple"></span>
                             <span class="ribbon-label">Night Prayer</span>
-                            <span class="ribbon-location"></span>
+                            <span class="ribbon-location">Loading...</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="navigation-menu">
-                    <button class="nav-btn active" data-hour="lauds">
-                        🌅 Morning
-                    </button>
-                    <button class="nav-btn" data-hour="daytime">
-                        ☀️ Daytime
-                    </button>
-                    <button class="nav-btn" data-hour="vespers">
-                        🌆 Evening
-                    </button>
-                    <button class="nav-btn" data-hour="compline">
-                        🌙 Night
-                    </button>
+                    <button class="nav-btn active" data-hour="morning">🌅 Morning Prayer</button>
+                    <button class="nav-btn" data-hour="daytime">☀️ Daytime Prayer</button>
+                    <button class="nav-btn" data-hour="evening">🌆 Evening Prayer</button>
+                    <button class="nav-btn" data-hour="night">🌙 Night Prayer</button>
                 </div>
 
                 <div class="calendar-nav">
@@ -74,30 +302,30 @@
                 </div>
             </aside>
 
-            <!-- Main Prayer Display -->
+            <!-- Prayer Content -->
             <section class="prayer-content">
-                <div class="saint-info" id="saintInfo">
-                    <h2 id="saintName">Loading...</h2>
-                    <p id="saintBio"></p>
+                <div class="saint-info">
+                    <h2 id="saintName">Loading Saint...</h2>
+                    <p id="saintBio">OMEGA AI is analyzing the liturgical data...</p>
                     <div class="saint-details">
-                        <span id="saintFeast"></span>
-                        <span id="saintRank"></span>
+                        <span id="saintFeast">🎉 Feast Day</span>
+                        <span id="saintRank">📜 Rank</span>
                     </div>
                 </div>
 
                 <div class="prayer-section" id="prayerContent">
-                    <!-- Dynamic content loaded by Omega AI -->
-                    <div class="loading">🧠 Omega AI is analyzing...</div>
+                    <div class="loading">🧠 OMEGA AI is analyzing...</div>
                 </div>
 
-                <div class="manual-references" id="manualRefs">
+                <div class="manual-references">
                     <h3>📚 Manual Breviary References</h3>
-                    <div id="refContent"></div>
+                    <div id="refContent">
+                        <div class="loading">Loading references...</div>
+                    </div>
                 </div>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="omega-footer">
             <p>⚡ Powered by OMEGA AI • Roman Catholic Sources • 100% Accurate</p>
             <p>Data sourced from: Roman Missal, Liturgy of the Hours, Roman Martyrology</p>
